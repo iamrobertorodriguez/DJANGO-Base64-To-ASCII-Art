@@ -1,5 +1,5 @@
 """
-URL configuration for base64toasci project.
+URL configuration for base64toascii project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/

@@ -1,19 +1,20 @@
-import PIL.Image
-from product.utils.delete_temp_image import delete_temp_image
+import io
+import base64
+from PIL import Image
 
-def image_to_ascii(image_path, size):
+def base64_to_ascii(base64_string, size):
     try:
-        image = PIL.Image.open(image_path)
-        
+        image_data = base64.b64decode(base64_string)
+        image = Image.open(io.BytesIO(image_data))
+
         width, height = image.size
         aspect_ratio = height/width
-        new_width = 20 if size == 'xs' else 50 if size == 's' else 90 if size == 'md' else 140 if size == 'lg' else 200
+        new_width = 30 if size == 'xs' else 50 if size == 's' else 80 if size == 'md' else 120 if size == 'lg' else 170
         new_height = aspect_ratio * new_width * 0.55
         image = image.resize((new_width, int(new_height)))
-        
+
         image = image.convert('L')
-        
-        chars = ["@", "J", "D", "%", "*", "P", "+", "Y", "$", ",", "."]
+        chars = ["@", "J", "D", "%", "*", "P", "+", "Y", "$", ",", ".",]
         
         pixels = image.getdata()
         new_pixels = [chars[pixel//25] for pixel in pixels]
@@ -21,7 +22,7 @@ def image_to_ascii(image_path, size):
         new_pixels_count = len(new_pixels)
         ascii_art = [new_pixels[index:index + new_width] for index in range(0, new_pixels_count, new_width)]
         ascii_art = "\n".join(ascii_art)
-        delete_temp_image(image_path)
+        print(ascii_art)
         return {"success": True, "ascii_art": ascii_art}
 
     except Exception as e:
