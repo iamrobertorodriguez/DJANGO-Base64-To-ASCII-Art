@@ -4,7 +4,14 @@ from PIL import Image
 
 def base64_to_ascii(base64_string, size):
     try:
-        image_data = base64.b64decode(base64_string)
+        splited = base64_string.split(',')
+
+        if len(splited) > 1:
+            encode = splited[1]
+        else:
+            encode = splited[0]
+        
+        image_data = base64.b64decode(encode)
         image = Image.open(io.BytesIO(image_data))
 
         width, height = image.size
